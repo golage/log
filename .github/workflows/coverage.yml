@@ -29,5 +29,5 @@ jobs:
     
     - name: Reporting coverage
       env: 
-        CODECOV_TOKEN: d864d00b-a566-423e-bd8b-79ed7bbfe025
+        CODECOV_TOKEN: 3a150f49-f275-4d42-a90b-4480067ab219
       run: bash <(curl -s https://codecov.io/bash)
