@@ -1,0 +1,14 @@
+# Binaries
+*.exe
+*.bin
+
+# Tests
+*.test
+*.out
+
+# Dependencies
+vendor/
+
+# IDEs
+.idea
+.code
