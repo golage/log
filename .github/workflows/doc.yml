@@ -21,5 +21,3 @@ jobs:
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
-    - name: Making request to proxy
-      run: echo ${{get_version}}
