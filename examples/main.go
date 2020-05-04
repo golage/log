@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+
 	"github.com/golage/log"
 )
 
@@ -11,6 +12,7 @@ type data struct {
 
 func main() {
 	log.SetLevel(log.LevelDebug)
+
 	log.SetConstant("code_name", "example")
 
 	log.Value("name", "john").Debug("debug message")

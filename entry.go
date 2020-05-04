@@ -3,7 +3,6 @@ package log
 import (
 	"fmt"
 	"log"
-	"os"
 	"reflect"
 	"runtime"
 	"time"
@@ -16,11 +15,20 @@ const (
 
 // Entry implements log data
 type Entry struct {
-	Raised  time.Time
-	Level   Level
-	Source  string
+	// Raised keeps log raised time
+	Raised time.Time
+
+	// Level keeps log level
+	Level Level
+
+	// Source keeps log source code with line
+	Source string
+
+	// Message keeps log message text
 	Message string
-	Data    map[string]interface{}
+
+	// Data keeps all data
+	Data map[string]interface{}
 }
 
 // NewEntry returns new entry with defaults
@@ -41,34 +49,29 @@ func NewEntry() *Entry {
 }
 
 // Debug logs entry with message in debug level
-func (entry *Entry) Debug(message string) {
-	entry.Level = LevelDebug
-	entry.log(message)
+func (entry Entry) Debug(message string) {
+	entry.log(LevelDebug, message)
 }
 
 // Info logs entry with message in info level
-func (entry *Entry) Info(message string) {
-	entry.Level = LevelInfo
-	entry.log(message)
+func (entry Entry) Info(message string) {
+	entry.log(LevelInfo, message)
 }
 
 // Warning logs entry with message in warning level
-func (entry *Entry) Warning(message string) {
-	entry.Level = LevelWarning
-	entry.log(message)
+func (entry Entry) Warning(message string) {
+	entry.log(LevelWarning, message)
 }
 
 // Error logs entry with message in error level
-func (entry *Entry) Error(message string) {
-	entry.Level = LevelError
-	entry.log(message)
+func (entry Entry) Error(message string) {
+	entry.log(LevelError, message)
 }
 
 // Fatal logs entry with message in fatal level so exit with code 1
-func (entry *Entry) Fatal(message string) {
-	entry.Level = LevelFatal
-	entry.log(message)
-	os.Exit(1)
+func (entry Entry) Fatal(message string) {
+	entry.log(LevelFatal, message)
+	exit(1)
 }
 
 // With appends data to entry and returns that
@@ -83,6 +86,7 @@ func (entry *Entry) With(data interface{}) *Entry {
 			value = reflect.ValueOf(value).Elem().Interface()
 		}
 		refType := reflect.TypeOf(value)
+
 		switch refType.Kind() {
 		case reflect.Map:
 			dic := reflect.ValueOf(value)
@@ -108,8 +112,9 @@ func (entry *Entry) Value(key string, value interface{}) *Entry {
 	return entry
 }
 
-func (entry *Entry) log(message string) {
-	entry.Message = message
+func (entry *Entry) log(lvl Level, msg string) {
+	entry.Level = lvl
+	entry.Message = msg
 	if entry.Level >= level {
 		if _, err := fmt.Fprintln(output, formatter.Format(*entry)); err != nil {
 			log.Printf("can not write on output: %v", err)
