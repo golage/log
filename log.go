@@ -8,6 +8,7 @@ import (
 var (
 	output    io.Writer = os.Stdout
 	level               = LevelInfo
+	exit                = os.Exit
 	formatter           = NewTextFormatter()
 	constants           = make(map[string]interface{})
 )
@@ -22,9 +23,9 @@ func SetLevel(lvl Level) {
 	level = lvl
 }
 
-// SetLogger sets logging formatter
-func SetLogger(log Formatter) {
-	formatter = log
+// SetFormatter sets logging formatter
+func SetFormatter(f Formatter) {
+	formatter = f
 }
 
 // SetConstant sets logging constants data
